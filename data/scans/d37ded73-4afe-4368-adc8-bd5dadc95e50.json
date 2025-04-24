@@ -1,0 +1,43 @@
+{
+  "id": "d37ded73-4afe-4368-adc8-bd5dadc95e50",
+  "target": "http://testphp.vulnweb.com/",
+  "templates_used": [
+    "sqli-detection"
+  ],
+  "timestamp": "2025-04-24T13:33:32.891223",
+  "vulnerabilities": [
+    {
+      "id": "4c859750-cd89-472d-b186-7f8697d5d8c4",
+      "name": "SQL Injection Vulnerability",
+      "severity": "high",
+      "type": "sql-injection",
+      "template": "sqli-detection",
+      "location": "http://testphp.vulnweb.com//login.php",
+      "details": "SQL injection vulnerability in login form that could allow authentication bypass.",
+      "cvss_score": 7.5,
+      "remediation": "Use prepared statements or parameterized queries."
+    },
+    {
+      "id": "f6fdfb72-28f6-4700-9b21-fd4d13f1b37f",
+      "name": "Cross-Site Scripting (XSS)",
+      "severity": "medium",
+      "type": "xss",
+      "template": "xss-detection",
+      "location": "http://testphp.vulnweb.com//search.php",
+      "details": "Reflected XSS vulnerability in search parameter.",
+      "cvss_score": 6.1,
+      "remediation": "Implement proper output encoding and input validation."
+    },
+    {
+      "id": "9c6bac43-d8d0-4989-9a08-e0cbc76df0ee",
+      "name": "Information Disclosure",
+      "severity": "low",
+      "type": "info-disclosure",
+      "template": "version-disclosure",
+      "location": "http://testphp.vulnweb.com//header",
+      "details": "Server version information disclosed in HTTP headers.",
+      "cvss_score": 3.5,
+      "remediation": "Configure server to not disclose version information."
+    }
+  ]
+}

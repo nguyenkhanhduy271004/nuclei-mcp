@@ -1,0 +1,180 @@
+{% extends "base.html" %}
+
+{% block title %}Nuclei MCP Scanner - Vulnerabilities{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-10">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1>Discovered Vulnerabilities</h1>
+            <a href="{{ url_for('scan') }}" class="btn btn-primary">New Scan</a>
+        </div>
+
+        {% if vulnerabilities %}
+        <div class="card shadow-sm mb-4">
+            <div class="card-header bg-light">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h5 class="card-title mb-0">Vulnerability List</h5>
+                    <div class="d-flex">
+                        <div class="btn-group btn-group-sm me-2">
+                            <button class="btn btn-outline-secondary severity-filter-btn"
+                                data-severity="all">All</button>
+                            <button class="btn btn-outline-danger severity-filter-btn"
+                                data-severity="critical">Critical</button>
+                            <button class="btn btn-outline-danger severity-filter-btn"
+                                data-severity="high">High</button>
+                            <button class="btn btn-outline-warning severity-filter-btn"
+                                data-severity="medium">Medium</button>
+                            <button class="btn btn-outline-warning severity-filter-btn" data-severity="low">Low</button>
+                            <button class="btn btn-outline-info severity-filter-btn" data-severity="info">Info</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover table-striped mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Vulnerability</th>
+                                <th>Type</th>
+                                <th>Severity</th>
+                                <th>Location</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for vuln in vulnerabilities %}
+                            <tr class="vuln-row" data-severity="{{ vuln.severity|lower }}">
+                                <td>{{ vuln.name }}</td>
+                                <td>{{ vuln.type }}</td>
+                                <td>
+                                    <span class="badge bg-{{ vuln.severity|lower }}">{{ vuln.severity|upper }}</span>
+                                </td>
+                                <td class="text-truncate" style="max-width: 250px;">{{ vuln.location }}</td>
+                                <td>
+                                    <a href="{{ url_for('vulnerability_details', vuln_id=vuln.id) }}"
+                                        class="btn btn-sm btn-outline-primary">Details</a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <div class="card shadow-sm">
+            <div class="card-body text-center py-5">
+                <div class="mb-4">
+                    <i class="bi bi-shield-check" style="font-size: 3rem;"></i>
+                </div>
+                <h3>No Vulnerabilities Found</h3>
+                <p class="lead text-muted">No vulnerabilities have been discovered yet.</p>
+                <a href="{{ url_for('scan') }}" class="btn btn-primary btn-lg mt-3">Run a Scan</a>
+            </div>
+        </div>
+        {% endif %}
+
+        <div class="card shadow-sm mt-4">
+            <div class="card-header bg-light">
+                <h5 class="card-title mb-0">Vulnerability Severity Levels</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item d-flex align-items-center">
+                                <span class="badge bg-critical me-3">CRITICAL</span>
+                                <span>Immediate threat to critical systems</span>
+                            </li>
+                            <li class="list-group-item d-flex align-items-center">
+                                <span class="badge bg-high me-3">HIGH</span>
+                                <span>Significant threat to system security</span>
+                            </li>
+                            <li class="list-group-item d-flex align-items-center">
+                                <span class="badge bg-medium me-3">MEDIUM</span>
+                                <span>Moderate impact on system security</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item d-flex align-items-center">
+                                <span class="badge bg-low me-3">LOW</span>
+                                <span>Minor impact on system security</span>
+                            </li>
+                            <li class="list-group-item d-flex align-items-center">
+                                <span class="badge bg-info me-3">INFO</span>
+                                <span>Informational finding, minimal risk</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .bg-critical {
+        background-color: #9c1f1f;
+    }
+
+    .bg-high {
+        background-color: #dc3545;
+    }
+
+    .bg-medium {
+        background-color: #fd7e14;
+    }
+
+    .bg-low {
+        background-color: #ffc107;
+    }
+
+    .bg-info {
+        background-color: #0dcaf0;
+    }
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const severityBtns = document.querySelectorAll('.severity-filter-btn');
+        if (severityBtns.length > 0) {
+            severityBtns.forEach(btn => {
+                btn.addEventListener('click', function () {
+                    // Clear active status
+                    severityBtns.forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+
+                    const severity = this.getAttribute('data-severity');
+                    filterVulnerabilitiesBySeverity(severity);
+                });
+            });
+        }
+    });
+
+    function filterVulnerabilitiesBySeverity(severity) {
+        const vulnRows = document.querySelectorAll('.vuln-row');
+        if (severity === 'all') {
+            vulnRows.forEach(row => {
+                row.style.display = '';
+            });
+        } else {
+            vulnRows.forEach(row => {
+                const rowSeverity = row.getAttribute('data-severity');
+                if (rowSeverity === severity) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        }
+    }
+</script>
+{% endblock %}

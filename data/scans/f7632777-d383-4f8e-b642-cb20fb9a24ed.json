@@ -1,0 +1,22 @@
+{
+  "id": "f7632777-d383-4f8e-b642-cb20fb9a24ed",
+  "target": "http://testphp.vulnweb.com/",
+  "templates_used": [
+    "sqli-detection",
+    "version-disclosure"
+  ],
+  "timestamp": "2025-04-24T13:33:38.712900",
+  "vulnerabilities": [
+    {
+      "id": "f604b2ee-9c4c-407c-959a-c1578056e823",
+      "name": "SQL Injection Vulnerability",
+      "severity": "high",
+      "type": "sql-injection",
+      "template": "sqli-detection",
+      "location": "http://testphp.vulnweb.com//login.php",
+      "details": "SQL injection vulnerability in login form that could allow authentication bypass.",
+      "cvss_score": 7.5,
+      "remediation": "Use prepared statements or parameterized queries."
+    }
+  ]
+}

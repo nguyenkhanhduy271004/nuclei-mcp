@@ -1,0 +1,1 @@
+# UI package for the Nuclei MCP server web interface 

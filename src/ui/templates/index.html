@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+
+{% block title %}Nuclei MCP Scanner - Home{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-10">
+        <div class="text-center mb-5">
+            <h1 class="display-4"><span class="text-danger">Nuclei</span> <span class="text-dark">MCP Scanner</span>
+            </h1>
+            <p class="lead">A powerful vulnerability scanner with AI integration</p>
+        </div>
+
+        <div class="row row-cols-1 row-cols-md-3 g-4 mt-4">
+            <div class="col">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title text-center mb-3">
+                            <i class="bi bi-search me-2"></i>Start Scanning
+                        </h5>
+                        <p class="card-text">Begin a new vulnerability scan against a target. Select from various
+                            templates to customize your scan.</p>
+                    </div>
+                    <div class="card-footer bg-transparent border-0 text-center">
+                        <a href="{{ url_for('scan') }}" class="btn btn-primary">New Scan</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title text-center mb-3">
+                            <i class="bi bi-clock-history me-2"></i>View History
+                        </h5>
+                        <p class="card-text">Access your scan history to review previous findings and monitor the
+                            security posture over time.</p>
+                    </div>
+                    <div class="card-footer bg-transparent border-0 text-center">
+                        <a href="{{ url_for('scans') }}" class="btn btn-secondary">Scan History</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title text-center mb-3">
+                            <i class="bi bi-shield-exclamation me-2"></i>Vulnerabilities
+                        </h5>
+                        <p class="card-text">Browse all discovered vulnerabilities across all scans with detailed
+                            information and remediation advice.</p>
+                    </div>
+                    <div class="card-footer bg-transparent border-0 text-center">
+                        <a href="{{ url_for('vulnerabilities') }}" class="btn btn-danger">View Vulnerabilities</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-5">
+            <h2 class="text-center mb-4">About Nuclei MCP Scanner</h2>
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <p>Nuclei MCP Scanner is a powerful vulnerability scanner that integrates with AI assistants through
+                        the Model Context Protocol (MCP). It provides comprehensive scanning capabilities to identify
+                        security vulnerabilities in web applications, networks, and infrastructure.</p>
+
+                    <p>Key features include:</p>
+                    <ul>
+                        <li>Fast and efficient vulnerability scanning using the Nuclei engine</li>
+                        <li>Integration with AI assistants for enhanced analysis and remediation advice</li>
+                        <li>Comprehensive template library covering various security vulnerabilities</li>
+                        <li>Detailed reporting and visualization of scan results</li>
+                        <li>Historical tracking of vulnerability status</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

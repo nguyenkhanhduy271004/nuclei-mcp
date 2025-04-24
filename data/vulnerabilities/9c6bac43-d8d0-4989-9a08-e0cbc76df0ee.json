@@ -1,0 +1,11 @@
+{
+  "id": "9c6bac43-d8d0-4989-9a08-e0cbc76df0ee",
+  "name": "Information Disclosure",
+  "severity": "low",
+  "type": "info-disclosure",
+  "template": "version-disclosure",
+  "location": "http://testphp.vulnweb.com//header",
+  "details": "Server version information disclosed in HTTP headers.",
+  "cvss_score": 3.5,
+  "remediation": "Configure server to not disclose version information."
+}

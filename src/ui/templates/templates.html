@@ -1,0 +1,125 @@
+{% extends "base.html" %}
+
+{% block title %}Nuclei MCP Scanner - Templates{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-10">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1>Vulnerability Templates</h1>
+            <a href="{{ url_for('scan') }}" class="btn btn-primary">New Scan</a>
+        </div>
+
+        <div class="card shadow-sm mb-4">
+            <div class="card-header bg-light">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h5 class="card-title mb-0">Available Templates</h5>
+                    <div>
+                        <select id="templateFilter" class="form-select form-select-sm">
+                            <option value="all">All Tags</option>
+                            {% set all_tags = [] %}
+                            {% for template in templates %}
+                            {% for tag in template.tags %}
+                            {% if tag not in all_tags %}
+                            {% set _ = all_tags.append(tag) %}
+                            {% endif %}
+                            {% endfor %}
+                            {% endfor %}
+                            {% for tag in all_tags|sort %}
+                            <option value="{{ tag }}">{{ tag }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                {% if templates %}
+                <div class="row row-cols-1 row-cols-md-2 g-4">
+                    {% for template in templates %}
+                    <div class="col template-item" data-tags="{{ template.tags|join(',') }}">
+                        <div class="card h-100 shadow-sm">
+                            <div class="card-header bg-{{ template.severity|lower }} bg-opacity-25">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <h6 class="card-title mb-0">{{ template.name }}</h6>
+                                    <span class="badge bg-{{ template.severity|lower }}">{{ template.severity|upper
+                                        }}</span>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <p class="card-text">{{ template.description }}</p>
+
+                                <div class="mt-3">
+                                    <strong>Author:</strong> {{ template.author }}
+                                </div>
+
+                                {% if template.tags %}
+                                <div class="mt-2">
+                                    {% for tag in template.tags %}
+                                    <span class="badge bg-secondary me-1">{{ tag }}</span>
+                                    {% endfor %}
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <div class="text-center py-4">
+                    <p class="lead text-muted">No templates available.</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="card shadow-sm">
+            <div class="card-header bg-light">
+                <h5 class="card-title mb-0">About Templates</h5>
+            </div>
+            <div class="card-body">
+                <p>Nuclei templates are YAML-based configuration files that define vulnerability detection patterns.
+                    Templates specify:</p>
+                <ul>
+                    <li>Detection logic and patterns for specific vulnerabilities</li>
+                    <li>HTTP requests to make and patterns to match in responses</li>
+                    <li>Severity ratings and classification information</li>
+                    <li>Remediation suggestions and additional references</li>
+                </ul>
+                <p class="mb-0">You can select specific templates when running scans to focus on particular
+                    vulnerability types.</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const templateFilter = document.getElementById('templateFilter');
+        if (templateFilter) {
+            templateFilter.addEventListener('change', function () {
+                filterTemplates(this.value);
+            });
+        }
+    });
+
+    function filterTemplates(tag) {
+        const templates = document.querySelectorAll('.template-item');
+        if (tag === 'all') {
+            templates.forEach(template => {
+                template.style.display = '';
+            });
+        } else {
+            templates.forEach(template => {
+                const tags = template.getAttribute('data-tags');
+                if (tags && tags.includes(tag)) {
+                    template.style.display = '';
+                } else {
+                    template.style.display = 'none';
+                }
+            });
+        }
+    }
+</script>
+{% endblock %}

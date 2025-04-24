@@ -1,0 +1,19 @@
+{
+  "info": {
+    "id": "version-disclosure",
+    "name": "Version Information Disclosure",
+    "author": "nuclei-team",
+    "severity": "low",
+    "description": "Detects version information disclosure in HTTP headers and responses",
+    "tags": [
+      "info-disclosure",
+      "recon"
+    ]
+  },
+  "requests": [
+    {
+      "method": "GET",
+      "path": "/"
+    }
+  ]
+}

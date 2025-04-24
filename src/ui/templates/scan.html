@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+
+{% block title %}Nuclei MCP Scanner - New Scan{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-10">
+        <h1 class="mb-4">New Vulnerability Scan</h1>
+
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <form method="POST" action="{{ url_for('scan') }}">
+                    <div class="mb-3">
+                        <label for="target" class="form-label">Target URL or IP</label>
+                        <input type="text" class="form-control" id="target" name="target"
+                            placeholder="https://example.com" required>
+                        <div class="form-text">Enter the target URL or IP address to scan for vulnerabilities.</div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label">Select Templates</label>
+                        <div class="row">
+                            {% for template in templates %}
+                            <div class="col-md-6 mb-2">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="templates"
+                                        value="{{ template.id }}" id="template-{{ template.id }}">
+                                    <label class="form-check-label" for="template-{{ template.id }}">
+                                        {{ template.name }}
+                                        <span class="badge bg-{{ template.severity | lower }}">{{ template.severity |
+                                            upper }}</span>
+                                    </label>
+                                    <small class="d-block text-muted">{{ template.description }}</small>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        <div class="form-text">Select the templates to use for scanning. If none are selected, all
+                            templates will be used.</div>
+                    </div>
+
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary btn-lg">Start Scan</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="card mt-4 shadow-sm">
+            <div class="card-header">
+                <h5 class="card-title mb-0">Scan Options</h5>
+            </div>
+            <div class="card-body">
+                <p>The Nuclei scanner provides various options for scanning targets:</p>
+                <ul>
+                    <li><strong>Target:</strong> Can be a single URL, IP address, or a range of IPs</li>
+                    <li><strong>Templates:</strong> Select specific vulnerability templates to scan for</li>
+                    <li><strong>Severity Levels:</strong>
+                        <span class="badge bg-critical">CRITICAL</span>
+                        <span class="badge bg-high">HIGH</span>
+                        <span class="badge bg-medium">MEDIUM</span>
+                        <span class="badge bg-low">LOW</span>
+                        <span class="badge bg-info">INFO</span>
+                    </li>
+                </ul>
+                <p class="mb-0">For advanced scanning options, consider using the Nuclei CLI directly with additional
+                    parameters.</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .bg-critical {
+        background-color: #9c1f1f;
+    }
+
+    .bg-high {
+        background-color: #dc3545;
+    }
+
+    .bg-medium {
+        background-color: #fd7e14;
+    }
+
+    .bg-low {
+        background-color: #ffc107;
+    }
+
+    .bg-info {
+        background-color: #0dcaf0;
+    }
+</style>
+{% endblock %}

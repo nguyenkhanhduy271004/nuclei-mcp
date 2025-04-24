@@ -1,0 +1,20 @@
+{
+  "info": {
+    "id": "xss-detection",
+    "name": "Cross-Site Scripting Detection",
+    "author": "nuclei-team",
+    "severity": "medium",
+    "description": "Detects XSS vulnerabilities in web applications",
+    "tags": [
+      "xss",
+      "injection",
+      "vulnerability"
+    ]
+  },
+  "requests": [
+    {
+      "method": "GET",
+      "path": "/"
+    }
+  ]
+}

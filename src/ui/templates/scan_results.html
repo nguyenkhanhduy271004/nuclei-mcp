@@ -1,0 +1,152 @@
+{% extends "base.html" %}
+
+{% block title %}Nuclei MCP Scanner - Scan Results{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-10">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1>Scan Results</h1>
+            <a href="{{ url_for('scan') }}" class="btn btn-primary">New Scan</a>
+        </div>
+
+        <div class="card shadow-sm mb-4">
+            <div class="card-header bg-light">
+                <h5 class="card-title mb-0">Scan Summary</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <strong>Target:</strong>
+                            <span class="ms-2">{{ scan.target }}</span>
+                        </div>
+                        <div class="mb-3">
+                            <strong>Scan ID:</strong>
+                            <span class="ms-2">{{ scan.id }}</span>
+                        </div>
+                        <div class="mb-3">
+                            <strong>Timestamp:</strong>
+                            <span class="ms-2">{{ scan.timestamp }}</span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <strong>Total Vulnerabilities:</strong>
+                            <span class="ms-2 badge bg-secondary">{{ scan.vulnerabilities | length }}</span>
+                        </div>
+                        <div>
+                            <strong>Severity Breakdown:</strong>
+                            <div class="mt-2">
+                                {% set severity_counts = {'critical': 0, 'high': 0, 'medium': 0, 'low': 0, 'info': 0} %}
+                                {% for vuln in vulnerabilities %}
+                                {% if vuln.severity == 'critical' %}
+                                {% set _ = severity_counts.update({'critical': severity_counts['critical'] + 1}) %}
+                                {% elif vuln.severity == 'high' %}
+                                {% set _ = severity_counts.update({'high': severity_counts['high'] + 1}) %}
+                                {% elif vuln.severity == 'medium' %}
+                                {% set _ = severity_counts.update({'medium': severity_counts['medium'] + 1}) %}
+                                {% elif vuln.severity == 'low' %}
+                                {% set _ = severity_counts.update({'low': severity_counts['low'] + 1}) %}
+                                {% else %}
+                                {% set _ = severity_counts.update({'info': severity_counts['info'] + 1}) %}
+                                {% endif %}
+                                {% endfor %}
+
+                                <span class="badge bg-critical me-2">Critical: {{ severity_counts['critical'] }}</span>
+                                <span class="badge bg-high me-2">High: {{ severity_counts['high'] }}</span>
+                                <span class="badge bg-medium me-2">Medium: {{ severity_counts['medium'] }}</span>
+                                <span class="badge bg-low me-2">Low: {{ severity_counts['low'] }}</span>
+                                <span class="badge bg-info">Info: {{ severity_counts['info'] }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card shadow-sm">
+            <div class="card-header bg-light">
+                <h5 class="card-title mb-0">Discovered Vulnerabilities</h5>
+            </div>
+            <div class="card-body p-0">
+                {% if vulnerabilities %}
+                <div class="table-responsive">
+                    <table class="table table-hover table-striped mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Vulnerability</th>
+                                <th>Type</th>
+                                <th>Severity</th>
+                                <th>Location</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for vuln in vulnerabilities %}
+                            <tr>
+                                <td>{{ vuln.name }}</td>
+                                <td>{{ vuln.type }}</td>
+                                <td>
+                                    <span class="badge bg-{{ vuln.severity | lower }}">{{ vuln.severity | upper
+                                        }}</span>
+                                </td>
+                                <td class="text-truncate" style="max-width: 250px;">{{ vuln.location }}</td>
+                                <td>
+                                    <a href="{{ url_for('vulnerability_details', vuln_id=vuln.id) }}"
+                                        class="btn btn-sm btn-outline-primary">Details</a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <div class="text-center p-4">
+                    <p class="lead text-muted mb-0">No vulnerabilities were found in this scan.</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        {% if scan.templates_used %}
+        <div class="card shadow-sm mt-4">
+            <div class="card-header bg-light">
+                <h5 class="card-title mb-0">Templates Used</h5>
+            </div>
+            <div class="card-body">
+                <ul class="list-group list-group-flush">
+                    {% for template in scan.templates_used %}
+                    <li class="list-group-item">{{ template }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .bg-critical {
+        background-color: #9c1f1f;
+    }
+
+    .bg-high {
+        background-color: #dc3545;
+    }
+
+    .bg-medium {
+        background-color: #fd7e14;
+    }
+
+    .bg-low {
+        background-color: #ffc107;
+    }
+
+    .bg-info {
+        background-color: #0dcaf0;
+    }
+</style>
+{% endblock %}

@@ -1,0 +1,11 @@
+{
+  "id": "f6fdfb72-28f6-4700-9b21-fd4d13f1b37f",
+  "name": "Cross-Site Scripting (XSS)",
+  "severity": "medium",
+  "type": "xss",
+  "template": "xss-detection",
+  "location": "http://testphp.vulnweb.com//search.php",
+  "details": "Reflected XSS vulnerability in search parameter.",
+  "cvss_score": 6.1,
+  "remediation": "Implement proper output encoding and input validation."
+}

@@ -1,0 +1,20 @@
+{
+  "info": {
+    "id": "sqli-detection",
+    "name": "SQL Injection Detection",
+    "author": "nuclei-team",
+    "severity": "high",
+    "description": "Detects SQL injection vulnerabilities in web applications",
+    "tags": [
+      "sqli",
+      "injection",
+      "vulnerability"
+    ]
+  },
+  "requests": [
+    {
+      "method": "GET",
+      "path": "/"
+    }
+  ]
+}

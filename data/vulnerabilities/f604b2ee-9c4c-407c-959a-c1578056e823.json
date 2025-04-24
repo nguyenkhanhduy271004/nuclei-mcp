@@ -1,0 +1,11 @@
+{
+  "id": "f604b2ee-9c4c-407c-959a-c1578056e823",
+  "name": "SQL Injection Vulnerability",
+  "severity": "high",
+  "type": "sql-injection",
+  "template": "sqli-detection",
+  "location": "http://testphp.vulnweb.com//login.php",
+  "details": "SQL injection vulnerability in login form that could allow authentication bypass.",
+  "cvss_score": 7.5,
+  "remediation": "Use prepared statements or parameterized queries."
+}

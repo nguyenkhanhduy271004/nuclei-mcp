@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+
+{% block title %}Nuclei MCP Scanner - Scan History{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-10">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1>Scan History</h1>
+            <a href="{{ url_for('scan') }}" class="btn btn-primary">New Scan</a>
+        </div>
+
+        {% if scans %}
+        <div class="card shadow-sm">
+            <div class="card-header bg-light">
+                <h5 class="card-title mb-0">Previous Scans</h5>
+            </div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover table-striped mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Target</th>
+                                <th>Date</th>
+                                <th>Vulnerabilities</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for scan in scans %}
+                            <tr>
+                                <td class="text-truncate" style="max-width: 300px;">{{ scan.target }}</td>
+                                <td>{{ scan.timestamp }}</td>
+                                <td>
+                                    <span class="badge bg-secondary">{{ scan.total_vulnerabilities }}</span>
+                                </td>
+                                <td>
+                                    <a href="{{ url_for('scan_results', scan_id=scan.id) }}"
+                                        class="btn btn-sm btn-outline-primary">View Results</a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <div class="card shadow-sm">
+            <div class="card-body text-center py-5">
+                <div class="mb-4">
+                    <i class="bi bi-search" style="font-size: 3rem;"></i>
+                </div>
+                <h3>No Scans Yet</h3>
+                <p class="lead text-muted">You haven't run any vulnerability scans yet.</p>
+                <a href="{{ url_for('scan') }}" class="btn btn-primary btn-lg mt-3">Run Your First Scan</a>
+            </div>
+        </div>
+        {% endif %}
+
+        <div class="card shadow-sm mt-4">
+            <div class="card-header bg-light">
+                <h5 class="card-title mb-0">About Scan History</h5>
+            </div>
+            <div class="card-body">
+                <p>The scan history provides a record of all vulnerability scans performed. Each scan entry includes:
+                </p>
+                <ul>
+                    <li>The target URL or IP that was scanned</li>
+                    <li>The date and time when the scan was performed</li>
+                    <li>The number of vulnerabilities discovered</li>
+                    <li>Links to detailed scan results and findings</li>
+                </ul>
+                <p class="mb-0">You can use this history to track security improvements over time and compare
+                    vulnerability trends across multiple scans.</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

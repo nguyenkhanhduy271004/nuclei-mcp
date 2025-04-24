@@ -1,0 +1,104 @@
+/* Nuclei MCP Scanner UI Styles */
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f8f9fa;
+    color: #212529;
+    padding-bottom: 70px;
+    /* For footer spacing */
+}
+
+/* Navbar customization */
+.navbar-brand {
+    font-weight: 700;
+}
+
+/* Card customization */
+.card {
+    border-radius: 8px;
+    border: none;
+    margin-bottom: 20px;
+}
+
+.card-header {
+    border-radius: 8px 8px 0 0 !important;
+    font-weight: 600;
+}
+
+/* Custom badge colors */
+.bg-critical {
+    background-color: #9c1f1f;
+    color: white;
+}
+
+.bg-high {
+    background-color: #dc3545;
+    color: white;
+}
+
+.bg-medium {
+    background-color: #fd7e14;
+    color: white;
+}
+
+.bg-low {
+    background-color: #ffc107;
+    color: #212529;
+}
+
+.bg-info {
+    background-color: #0dcaf0;
+    color: #212529;
+}
+
+/* Vulnerability detail page */
+.vulnerability-detail dt {
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.vulnerability-detail dd {
+    margin-bottom: 1.5rem;
+}
+
+/* Custom buttons */
+.btn-scan {
+    background-color: #6610f2;
+    border-color: #6610f2;
+    color: white;
+}
+
+.btn-scan:hover {
+    background-color: #5209d1;
+    border-color: #5209d1;
+    color: white;
+}
+
+/* Footer */
+.footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background-color: #f8f9fa;
+    border-top: 1px solid #dee2e6;
+}
+
+/* Table customization */
+.table th {
+    font-weight: 600;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .card-body {
+        padding: 1rem;
+    }
+
+    h1 {
+        font-size: 1.8rem;
+    }
+
+    .footer {
+        position: relative;
+    }
+}
